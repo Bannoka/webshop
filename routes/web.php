@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+
 
 Route::get('/', function () {
-    return view('welcome');
+    $kategoriak = DB::select("SELECT kategoriak.nev,urlek.url
+    FROM kategoriak
+    INNER JOIN urlek
+    ON (kategoriak.k_id=urlek.kapcsolat)
+    WHERE urlek.tipus= 'kategoria'");
+    
+    
+    return view('welcome',["kategoriak" => $kategoriak]);
 });
 
 Route::get('/dashboard', function () {
